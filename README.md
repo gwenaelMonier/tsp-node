@@ -1,4 +1,4 @@
-# tsp-node
+# TSP-node
 A node.js API to solve traveling salesman problem
 
 ## Configuration
@@ -26,4 +26,4 @@ npm start
 
 ## Documentation
 
-When app is running you can check API documentation : http://localhost:3000/api-docs/
+When app is running you can check API documentation here : http://localhost:3000/api-docs/
