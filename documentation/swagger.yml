@@ -1,0 +1,211 @@
+swagger: "2.0"
+info:
+  description: "A node.js API to solve traveling salesman problem"
+  version: "1.0.0"
+  title: "Traveling salesman problem API"
+  contact:
+    email: "gwenaelmonier@gmail.com"
+host: "127.0.0.1:3000"
+basePath: "/api/v1"
+tags:
+- name: "optimization algorithm"
+  description: "based on external algorithm"
+schemes:
+- "http"
+paths:
+  /routeOptimizer:
+    post:
+      tags:
+      - "optimization algorithm"
+      summary: "Find best travel optimization"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Travel informations"
+        required: true
+        schema:
+          $ref: "#/definitions/TravelInformations"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/RouteOptimizerResponseSuccess"
+        400:
+          description: "Unsuccessful operation"
+          schema:
+            $ref: "#/definitions/RouteOptimizerResponseFailure"
+definitions:
+  TravelInformations:
+    type: "object"
+    description: "Informations concerning a travel"
+    required:
+      - "departureTime"
+      - "home"
+      - "tasks"
+    properties:
+      departureTime:
+        type: "integer"
+        format: "int32"
+        description: "Time at which we're leaving home (timestamp in seconds)"
+        example: 1524904095
+      home:
+        type: "object"
+        description: "First step and last step of the travel"
+        properties:
+          lat:
+            type: "number"
+            description: "Latitude"
+            example: 48.83310530000001
+          lng:
+            type: "number"
+            description: "Longitude"
+            example: 2.333563799999979
+      tasks:
+        type: "array"
+        description: "Tasks to do"
+        items:
+          type: "object"
+          required:
+            - "id"
+            - "lat"
+            - "lng"
+            - "duration"
+          properties:
+            id:
+              type: "integer"
+              format: "int32"
+              description: "Identifier"
+            lat:
+              type: "number"
+              description: "Latitude"
+            lng:
+              type: "number"
+              description: "Longitude"
+            duration:
+              type: "integer"
+              format: "int32"
+              description: "Duration of the task (minutes)"
+        example:
+        - id: 1
+          lat: 48.8623348
+          lng: 2.3447356000000354
+          duration: 45
+        - id: 2
+          lat: 48.879251
+          lng: 2.282264899999973
+          duration: 60
+        - id: 3
+          lat: 48.7251521
+          lng: 2.259899799999971
+          duration: 30
+        - id: 4
+          lat: 48.83477
+          lng: 2.370769999999993
+          duration: 90
+  RouteOptimizerResponseSuccess:
+    type: "object"
+    description: "Successful route optimizer response"
+    required:
+      - "status"
+      - "statusText"
+      - "result"
+    properties:
+      status:
+        type: "string"
+        description: "Response status"
+        example: "OK"
+      statusText:
+        type: "string"
+        description: "Some details concerning status"
+        example: "Valid request"
+      result:
+        $ref: "#/definitions/OptimizedRoute"
+  RouteOptimizerResponseFailure:
+    type: "object"
+    description: "Failure route optimizer response"
+    required:
+      - "status"
+      - "statusText"
+    properties:
+      status:
+        type: "string"
+        description: "Response status"
+        enum:
+        - "NOT_FOUND"
+        - "ZERO_RESULTS"
+        - "MAX_WAYPOINTS_EXCEEDED"
+        - "INVALID_REQUEST"
+        - "OVER_QUERY_LIMIT"
+        - "REQUEST_DENIED"
+        - "UNKNOWN_ERROR"
+        example: "MAX_WAYPOINTS_EXCEEDED"
+      statusText:
+        type: "string"
+        description: "Some details concerning status"
+        example: "Too many waypoints in the request (48). The maximum allowed waypoints for this request is 23, plus the origin, and destination."
+  OptimizedRoute:
+    type: "object"
+    description: "Optimized route"
+    required:
+      - "totalTime"
+      - "schedule"
+    properties:
+      totalTime:
+        type: "integer"
+        format: "int32"
+        description: "Total time from leaving home to returning home"
+        example: 330
+      schedule:
+        type: "array"
+        items:
+          type: "object"
+          required:
+            - "id"
+            - "startAt"
+            - "endAt"
+            - "lat"
+            - "lng"
+          properties:
+            id:
+              type: "integer"
+              format: "int32"
+              description: "Identifier"
+            startAt:
+              type: "integer"
+              format: "int32"
+              description: "The starting time (timestamp in seconds)"
+            endAt:
+              type: "integer"
+              format: "int32"
+              description: "The ending time (timestamp in seconds)"
+            lat:
+              type: "number"
+              description: "Latitude"
+            lng:
+              type: "number"
+              description: "Longitude"
+        example:
+        - id: 4
+          startsAt: 1524904748
+          endsAt: 1524910148
+          lat: 48.83477
+          lng: 2.370769999999993
+        - id: 1
+          startsAt: 1524911257
+          endsAt: 1524913957
+          lat: 48.8623348
+          lng: 2.3447356000000354
+        - id: 2
+          startsAt: 1524915091
+          endsAt: 1524918691
+          lat: 48.879251
+          lng: 2.282264899999973
+        - id: 3
+          startsAt: 1524920570
+          endsAt: 1524922370
+          lat: 48.7251521
+          lng: 2.259899799999971
