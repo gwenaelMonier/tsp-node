@@ -1,0 +1,37 @@
+{
+  "name": "tsp-node",
+  "version": "1.0.0",
+  "description": "A node.js API to solve traveling salesman problem",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "NODE_ENV=test mocha './**/*.spec.js' --exit",
+    "posttest": "eslint --ignore-path .gitignore ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gwenaelMonier/tsp-node.git"
+  },
+  "author": "Gwenaël Monier",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gwenaelMonier/tsp-node/issues"
+  },
+  "homepage": "https://github.com/gwenaelMonier/tsp-node#readme",
+  "dependencies": {
+    "@google/maps": "^0.4.6",
+    "axios": "^0.18.0",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-validation": "^1.0.2",
+    "joi": "^13.2.0",
+    "mocha": "^5.1.1",
+    "should": "^13.2.1",
+    "supertest": "^3.0.0",
+    "swagger-ui-express": "^3.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-strongloop": "^2.1.0"
+  }
+}
